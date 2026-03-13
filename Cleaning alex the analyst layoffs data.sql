@@ -389,23 +389,8 @@ select `month`, total,
 from rolling_total;
 
 -- Were there any sudden spikes?
+-- see rolling total above. january 2023 shows the largest single month spike (92,037)
 
--- what % of companies completely shut down?
-select 
-    round(sum(case when percentage_laid_off = 1 then 1 else 0 end) / count(*) * 100, 2) as shutdown_pct
-from layoffs_2_staging;
-
--- which industries had the highest company death rate?
-
-select 
-    industry,
-    count(*) as total_companies,
-    sum(case when percentage_laid_off = 1 then 1 else 0 end) as shutdowns,
-    round(sum(case when percentage_laid_off = 1 then 1 else 0 end) / count(*) * 100, 1) as shutdown_rate_pct
-from layoffs_2_staging
-where industry is not null
-group by industry
-order by shutdown_rate_pct desc;
 
 -- ================================
 -- 7. SURVIVAL INSIGHTS
